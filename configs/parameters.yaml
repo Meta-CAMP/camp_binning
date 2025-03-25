@@ -38,6 +38,7 @@ maxbin2_script: ''
 # --- metabinner_binning --- #
 
 metabinner_env: ''
+checkm1_db: ''
 
 
 # --- das_tool_refinement --- #

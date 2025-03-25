@@ -373,11 +373,13 @@ rule metabinner_binning:
         mem_mb=lambda wildcards, attempt: \
             int(config['metabinner_binning_mem_mb']) + 40000 * attempt,
     params:
-        out_dir=join(dirs.OUT,'5_metabinner','{sample}'),
+        out_dir = join(dirs.OUT,'5_metabinner','{sample}'),
         mb_path = config['metabinner_env'],
+        checkm1_db = config['checkm1_db'],
     shell:
         """
         rm -r {params.out_dir}
+        checkm data setRoot {params.checkm1_db}
         run_metabinner.sh -a {input.ctg} -d {input.cov} -k {input.cmp} \
             -p {params.mb_path}/bin/  -o {params.out_dir} -t {threads} > {log} 2>&1
         """

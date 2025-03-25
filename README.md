@@ -1,7 +1,7 @@
 # CAMP Binning
 
 
-[![Documentation Status](https://img.shields.io/readthedocs/camp_binning)](https://camp-documentation.readthedocs.io/en/latest/binning.html) ![Version](https://img.shields.io/badge/version-0.9.9-brightgreen)
+[![Documentation Status](https://img.shields.io/readthedocs/camp_binning)](https://camp-documentation.readthedocs.io/en/latest/binning.html) ![Version](https://img.shields.io/badge/version-0.9.10-brightgreen)
 
 ## Overview
 
@@ -13,9 +13,9 @@ Currently, the binning algorithms MetaBAT2, CONCOCT, SemiBin, MaxBin2, MetaBinne
 
 ## Installation
 
-1. Clone repo from [Github](<https://github.com/MetaSUB-CAMP/camp_binning>).
+1. Clone repo from [Github](<https://github.com/Meta-CAMP/camp_binning>).
 ```Bash
-git clone https://github.com/MetaSUB-CAMP/camp_binning
+git clone https://github.com/Meta-CAMP/camp_binning
 ```
 
 2. Set up the conda environment using `configs/conda/binning.yaml`. 

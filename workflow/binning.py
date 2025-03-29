@@ -10,7 +10,7 @@ from os.path import abspath, dirname, exists, join
 import pandas as pd
 from snakemake import snakemake, main
 from shutil import rmtree
-from utils import Workflow_Dirs, print_cmds, cleanup_files
+from utils import Workflow_Dirs, print_cmds, cleanup_files, get_conda_prefix
 
 
 @click.group(cls = DefaultGroup, default = 'run', default_if_no_args = True)
@@ -102,10 +102,8 @@ def run(cores, work_dir, samples, parameters, resources, slurm, dry_run, unlock,
     ryaml = resources if resources else join(main_dir, 'configs', 'resources.yaml')
 
     # Set up the conda environment directory
-    env_dir = join(main_dir, 'conda_envs')
-    if not exists(env_dir):
-        makedirs(env_dir)
     env_yamls = join(main_dir, 'configs', 'conda')
+    env_dir = get_conda_prefix(pyaml)
 
     # If generating unit tests, set the unit test directory (by default, is pytest's default, .tests)
     # unit_test_dir = join(main_dir, '.tests/unit') if unit_test else None
@@ -156,11 +154,9 @@ def test():
     ryaml = join(main_dir, 'test_data', 'resources.yaml')
 
     # Set up the conda environment directory
-    env_dir = join(main_dir, 'conda_envs')
-    if not exists(env_dir):
-        makedirs(env_dir)
     env_yamls = join(main_dir, 'configs', 'conda')
-    
+    env_dir = get_conda_prefix(pyaml)
+
     # Run workflow
     cmd_line(workflow, work_dir, samples, env_yamls, pyaml, ryaml,   \
              10, env_dir, False, False)

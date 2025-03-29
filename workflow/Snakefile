@@ -168,8 +168,7 @@ rule concoct_binning:
     output:
         join(dirs.OUT, '2_concoct', '{sample}', \
              'clustering_gt' + str(config['min_contig_len']) + '.csv'),
-    conda:
-        join(config['env_yamls'], 'concoct.yaml'),
+    conda: "concoct",
     log:
         join(dirs.LOG, 'concoct_binning', '{sample}.out'), 
     resources:
@@ -217,8 +216,7 @@ rule semibin_binning:
         join(dirs.OUT, '3_semibin', '{sample}', 'recluster_bins_info.tsv'),
     log:
         join(dirs.LOG, 'semibin_binning', '{sample}.out'),
-    conda:
-        join(config['env_yamls'], 'semibin.yaml'),
+    conda: "semibin",
     threads: config['semibin_binning_threads'],
     resources:
         mem_mb = lambda wildcards, attempt: \
@@ -346,8 +344,7 @@ rule metabinner_make_composition:
         join(dirs.TMP, '{sample}.fasta'),
     output:
         join(dirs.OUT,'5_metabinner','{sample}_composition.txt'),
-    conda:
-        join(config['env_yamls'], 'metabinner.yaml'),
+    conda: "metabinner",
     params:
         kmer_scr = join(dirs_scr, 'gen_kmer.py'),
         min_len = config['min_contig_len'],
@@ -364,8 +361,7 @@ rule metabinner_binning:
         ctg = join(dirs.TMP, '{sample}.fasta'),
     output:
         join(dirs.OUT,'5_metabinner','{sample}', 'metabinner_res', 'metabinner_result.tsv'),
-    conda:
-        join(config['env_yamls'], 'metabinner.yaml'),
+    conda: "metabinner",
     log:
         join(dirs.LOG,'metabinner_binning','{sample}.out'),
     threads: config['metabinner_binning_threads'],
@@ -413,8 +409,7 @@ rule vamb_binning:
         join(dirs.OUT, '6_vamb', '{sample}', 'clusters.tsv'),
     log:
         join(dirs.LOG, 'vamb_binning', '{sample}.out'),
-    conda:
-        join(config['env_yamls'], 'vamb.yaml'),
+    conda: "vamb",
     threads: config['vamb_binning_threads'],
     resources:
         mem_mb = lambda wildcards, attempt: \
@@ -442,8 +437,7 @@ rule split_vamb_output:
         ctg = join(dirs.TMP, '{sample}.fasta'),
     output:
         join(dirs.OUT, '6_vamb', '{sample}_done.txt'),
-    conda:
-        join(config['env_yamls'], 'vamb.yaml'),
+    conda: "vamb",
     params:
         in_dir = join(dirs.OUT, '6_vamb', '{sample}'),
         out_dir = join(dirs.OUT, '6_vamb', '{sample}', 'bins'),
@@ -479,8 +473,7 @@ rule dastool_refinement:
         join(dirs.OUT, '7_dastool', '{sample}', 'refined_DASTool_contig2bin.tsv'),
     log:
         join(dirs.LOG, 'dastool_refinement', '{sample}.out'),
-    conda:
-        join(config['env_yamls'], 'das_tool.yaml'),
+    conda: "das_tool",
     threads: config['dastool_refinement_threads'],
     resources:
         mem_mb = lambda wildcards, attempt: \

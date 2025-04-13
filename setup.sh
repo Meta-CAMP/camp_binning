@@ -72,6 +72,7 @@ else
     cd ../
 
     MAXBIN_PATH="$BIN_DIR/MaxBin-2.2.7/run_MaxBin.pl"
+    rm $BIN_DIR/maxbin2.tar.gz
 fi
 
 # === Step 4: Export PATH ===
@@ -185,6 +186,7 @@ ask_checkm1() {
                 echo "✅ $DB_NAME installed successfully!"
 
                 DATABASE_PATHS[$DB_VAR_NAME]="$FINAL_DB_PATH"
+                rm $INSTALL_DIR/$ARCHIVE
                 return
                 ;;
             * ) echo "⚠️ Please enter 'y' or 'n'.";;

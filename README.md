@@ -1,4 +1,4 @@
-# CAMP Binning
+# MAG Binning
 
 
 [![Documentation Status](https://img.shields.io/readthedocs/camp_binning)](https://camp-documentation.readthedocs.io/en/latest/binning.html) ![Version](https://img.shields.io/badge/version-0.9.10-brightgreen)

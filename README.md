@@ -31,40 +31,16 @@ conda env create -f configs/conda/binning.yaml
 conda activate binning
 ```
 
-3. The conda version of MaxBin2 doesn't seem to work, so the best way to add it to the module is to install it separately. 
-```Bash    
-cd bin/
-wget https://sourceforge.net/projects/maxbin2/files/latest/download
-tar -xf download
-spack load gcc@6.3.0 # This is only necessary for HPCs with extremely old gcc's 
-cd MaxBin-2.2.7/src
-make
-cd ../
-./autobuild_auxiliary
-wget https://github.com/loneknightpy/idba/releases/download/1.1.3/idba-1.1.3.tar.gz
-tar -xf idba-1.1.3.tar.gz
-cd idba-1.1.3/
-./configure --prefix=/path/to/bin/MaxBin-2.2.7/auxiliary/idba-1.1.3 # IDBA-UD was not included in the auxiliary build
-make
-# Option 1: Modify MaxBin2's settings config with the locations of the auxiliary algorithms, or...
-vim /path/to/bin/MaxBin-2.2.7/setting
-# Option 2: Export or add the following to ~/.bashrc
-export PATH=$PATH:/path/to/bin/MaxBin-2.2.7:/path/to/bin/MaxBin-2.2.7/auxiliary/FragGeneScan_1.30:/path/to/bin/MaxBin-2.2.7/auxiliary/hmmer-3.1b1/src:/path/to/bin/MaxBin-2.2.7/auxiliary/bowtie2-2.2.3:/path/to/bin/MaxBin-2.2.7/auxiliary/idba-1.1.3/bin
-```
-
-4. Pre-install the MetaBinner environment by dry-running the module.
+3. Set up the rest of the module interactively by running `setup.sh`. This will install the necessary conda environments (if they have not been installed already) and generate `parameters.yaml` as well as set up the paths in `test_data/samples.csv` for testing. 
 ```Bash
-python /path/to/camp_binning/workflow/binning.py --dry_run \
-    -d /home/lam4003/bin/camp_binning/test_out \
-    -s /home/lam4003/bin/camp_binning/test_data/samples.csv
+source setup.sh
 
-# In the directory /path/to/camp_binning/conda_envs/, find the environment ID that corresponds to MetaBinner
-# /path/to/camp_binning/conda_envs/metabinner_env_id
+# If you encounter issues where conda activate is not recognized, follow these steps to properly initialize Conda
+conda init
+source ~/.bashrc # or source ~/.zshrc
 ```
 
-4. Update the relevant parameters (ex. `ext/` (the location of external tools and scripts), `metabinner_env` (the location of the MetaBinner environment), and `maxbin2_script` (the location of the MaxBin2 script)) in `test_data/parameters.yaml`.
-
-5. Make sure the installed pipeline works correctly. With 40 threads and a maximum of 100 GB allocated, the test dataset should finish in approximately 35 minutes.
+4. Make sure the installed pipeline works correctly. With 40 threads and a maximum of 100 GB allocated, the test dataset should finish in approximately 35 minutes.
 ```Bash
 # Run tests on the included sample dataset
 python /path/to/camp_binning/workflow/binning.py test

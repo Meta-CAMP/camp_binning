@@ -87,6 +87,8 @@ rule metabat2_calculate_depth:
         join(dirs.OUT, '1_metabat2', '{sample}', 'coverage.txt'),
     log:
         join(dirs.LOG, 'calculate_depth', 'metabat2_{sample}.out'),
+    conda:
+        'metabat2',
     params:
         out_dir = join(dirs.OUT, '1_metabat2', '{sample}'),
     shell:
@@ -105,6 +107,8 @@ rule metabat2_binning:
         join(dirs.OUT, '1_metabat2', '{sample}_binned.txt'),
     log:
         join(dirs.LOG, 'metabat2_binning', '{sample}.out'), 
+    conda:
+        'metabat2',
     threads: config['metabat2_binning_threads'],
     resources:
         mem_mb = lambda wildcards, attempt: \
@@ -254,6 +258,8 @@ rule maxbin2_calculate_depth:
         join(dirs.OUT,'0_contig_coverage','{sample}','coverage.sort.bam'),
     output:
         join(dirs.OUT,'4_maxbin2','{sample}','coverage.txt'),
+    conda:
+        'metabat2',
     log:
         join(dirs.LOG,'calculate_depth','maxbin2_{sample}.out'),
     params:
@@ -292,11 +298,10 @@ rule maxbin2_binning:
     params:
         out_dir=join(dirs.OUT,'4_maxbin2','{sample}'),
         min_len=config['min_contig_len'],
-        mb_script=config['maxbin2_script']
     shell:
         """
         mkdir -p {params.out_dir}
-        {params.mb_script} -abund {input.cov} -contig {input.ctg} \
+        run_MaxBin.pl -abund {input.cov} -contig {input.ctg} \
             -out {params.out_dir} -min_contig_length {params.min_len} \
             -markerset 107 -thread {threads} > {log} 2>&1
         touch {output}
@@ -583,9 +588,5 @@ rule make_config:
         df.reset_index(inplace = True)
         df.rename(columns = {'index': 'sample_name'}, inplace = True)
         df.to_csv(str(output), index = False)
-
-        # for s in samples:
-        #     dct[s]['illumina_fwd'] = join(str(params.tmp_dir),s + '_1.fastq.gz')
-        #     dct[s]['illumina_rev'] = join(str(params.tmp_dir),s + '_2.fastq.gz')
 
 

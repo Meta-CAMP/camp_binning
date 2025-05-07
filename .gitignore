@@ -126,3 +126,6 @@ dmypy.json
 # Other
 *.idea/
 *.DS_Store
+test_data/.DS_Store
+workflow/.DS_Store
+workflow/ext/.DS_Store

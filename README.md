@@ -1,7 +1,9 @@
 # MAG Binning
 
 
-[![Documentation Status](https://img.shields.io/readthedocs/camp_binning)](https://camp-documentation.readthedocs.io/en/latest/binning.html) ![Version](https://img.shields.io/badge/version-0.10.0-brightgreen)
+![Version](https://img.shields.io/badge/version-0.11.0-brightgreen)
+
+<!-- [![Documentation Status](https://img.shields.io/readthedocs/camp_binning)](https://camp-documentation.readthedocs.io/en/latest/binning.html)  -->
 
 ## Overview
 
@@ -41,7 +43,7 @@ git clone https://github.com/Meta-CAMP/camp_binning
 
 2. Set up the rest of the module interactively by running `setup.sh`. This will install the necessary conda environments (if they have not been installed already) and generate `parameters.yaml` as well as set up the paths in `test_data/samples.csv` for testing. 
 ```Bash
-cd camp_binning
+cd camp_binning/
 source setup.sh
 
 # If you encounter issues where conda activate is not recognized, follow these steps to properly initialize Conda

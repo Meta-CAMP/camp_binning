@@ -38,7 +38,7 @@ find_install_camp_env() {
         echo "✅ The main CAMP environment is already installed in $DEFAULT_CONDA_ENV_DIR."
     else
         echo "🚀 Installing the main CAMP environment in $DEFAULT_CONDA_ENV_DIR/..."
-        conda create --prefix "$DEFAULT_CONDA_ENV_DIR/camp" -c conda-forge -c bioconda biopython blast bowtie2 bumpversion click click-default-group cookiecutter jupyter matplotlib numpy pandas samtools scikit-learn scipy seaborn snakemake umap-learn upsetplot
+        conda create --prefix "$DEFAULT_CONDA_ENV_DIR/camp" -c conda-forge -c bioconda biopython blast bowtie2 bumpversion click click-default-group cookiecutter jupyter matplotlib numpy pandas samtools scikit-learn scipy seaborn snakemake=7.32.4 umap-learn upsetplot
         echo "✅ The main CAMP environment has been installed successfully!"
     fi
 }
@@ -49,7 +49,11 @@ find_install_conda_env() {
         echo "✅ The $1 environment is already installed in $DEFAULT_CONDA_ENV_DIR."
     else
         echo "🚀 Installing $1 in $DEFAULT_CONDA_ENV_DIR/$1..."
-        conda create --prefix $DEFAULT_CONDA_ENV_DIR/$1 -c conda-forge -c bioconda $1
+        if [ $1 = 'metabat2' ]; then
+            conda create -n metabat2 -c conda-forge -c bioconda metabat2=2.15 # jgi_summarize_bam_contig_depths library incompatibilities
+        else
+            conda create --prefix $DEFAULT_CONDA_ENV_DIR/$1 -c conda-forge -c bioconda $1
+        fi
         echo "✅ $1 installed successfully!"
     fi
 }
@@ -63,7 +67,7 @@ ask_database() {
     echo "🛠️  Checking for $DB_NAME database..."
 
     while true; do
-        read -p "❓ Do you already have $DB_NAME installed? (y/n): " RESPONSE
+        read -p "❓ Do you already have the $DB_NAME database installed? (y/n): " RESPONSE
         case "$RESPONSE" in
             [Yy]* )
                 while true; do
@@ -76,22 +80,19 @@ ask_database() {
                         echo "⚠️ The provided path does not exist or is empty. Please check and try again."
                         read -p "Do you want to re-enter the path (r) or install $DB_NAME instead (i)? (r/i): " RETRY
                         if [[ "$RETRY" == "i" ]]; then
-                            break  # Exit inner loop to start installation
+                            break  # Exit outer loop to start installation
                         fi
                     fi
                 done
-                if [[ "$RETRY" == "i" ]]; then
-                    break  # Exit outer loop to install the database
-                fi
                 ;;
             [Nn]* )
-                read -p "📂 Enter the directory where you want to install $DB_NAME: " DB_PATH
-                install_database "$DB_NAME" "$DB_VAR_NAME" "$DB_PATH"
-                return  # Exit function after installation
-                ;;
+                break # Exit outer loop to start installation
+                ;; 
             * ) echo "⚠️ Please enter 'y(es)' or 'n(o)'.";;
         esac
     done
+    read -p "📂 Enter the directory where you want to install $DB_NAME: " DB_PATH
+    install_database "$DB_NAME" "$DB_VAR_NAME" "$DB_PATH"
 }
 
 # Install databases in the specified directory
@@ -107,15 +108,10 @@ install_database() {
         "checkm1")
             local ARCHIVE="checkm_data_2015_01_16.tar.gz"
             local DB_URL="https://data.ace.uq.edu.au/public/CheckM_databases/$ARCHIVE"
-            wget -c $DB_URL -P $INSTALL_DIR
-	        tar -xzf "$INSTALL_DIR/$ARCHIVE.tar.gz" -C "$FINAL_DB_PATH"
+            # wget -c $DB_URL -P $INSTALL_DIR
+            mkdir -p "$FINAL_DB_PATH"
+	        tar -xzf "$INSTALL_DIR/$ARCHIVE" -C "$FINAL_DB_PATH"
             echo "✅ CheckM1 database installed successfully!"
-            ;;
-        "DATABASE_2_PATH")
-            wget https://repository2.com/database_2.tar.gz -P $INSTALL_DIR
-	        mkdir -p $FINAL_DB_PATH
-            tar -xzf "$INSTALL_DIR/database_2.tar.gz" -C "$FINAL_DB_PATH"
-            echo "✅ Database 2 installed successfully!"
             ;;
         *)
             echo "⚠️ Unknown database: $DB_NAME"
@@ -131,6 +127,7 @@ show_welcome
 
 # Set work_dir
 MODULE_WORK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DEFAULT_PATH=$PWD
 read -p "Enter the working directory (Press Enter for default: $DEFAULT_PATH): " USER_WORK_DIR
 BINNING_WORK_DIR="$(realpath "${USER_WORK_DIR:-$PWD}")"
 echo "Working directory set to: $BINNING_WORK_DIR"

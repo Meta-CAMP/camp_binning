@@ -175,6 +175,7 @@ rule concoct_binning:
     conda: "concoct",
     log:
         join(dirs.LOG, 'concoct_binning', '{sample}.out'), 
+    threads: config['concoct_binning_threads'],
     resources:
         mem_mb = lambda wildcards, attempt: \
               int(config['concoct_binning_mem_mb']) + 40000 * attempt,
@@ -184,11 +185,10 @@ rule concoct_binning:
     shell:
         """
         mkdir -p {params.out_dir}
-        concoct --composition_file {input.ctg} --coverage_file {input.cov} \
+        concoct -t {threads} --composition_file {input.ctg} --coverage_file {input.cov} \
             -l {params.min_len} -b {params.out_dir}/ > {log} 2>&1
-        sed -i '1i contig_id,cluster_id' {output}
         """
-
+#         sed -i '1i contig_id,cluster_id' {output}
 
 rule split_concoct_output:
     input:
@@ -233,7 +233,7 @@ rule semibin_binning:
     shell:
         """
         rm -r {params.out_dir}
-        SemiBin single_easy_bin -t {threads} --input-fasta {input.ctg} --input-bam {input.bam} --environment {params.meta_env} \
+        SemiBin1 single_easy_bin -t {threads} --input-fasta {input.ctg} --input-bam {input.bam} --environment {params.meta_env} \
             --min-len {params.min_len} --output {params.out_dir} > {log} 2>&1
         """
 
@@ -291,6 +291,7 @@ rule maxbin2_binning:
         join(dirs.OUT,'4_maxbin2','{sample}_binning.txt'),
     log:
         join(dirs.LOG,'maxbin2_binning','{sample}.out'),
+    conda: 'maxbin2'
     threads: config['maxbin2_binning_threads'],
     resources:
         mem_mb=lambda wildcards, attempt: \
@@ -409,7 +410,7 @@ rule move_metabinner_bins:
 rule vamb_binning:
     input:
         ctg = join(dirs.TMP, '{sample}.fasta'),
-        bam = join(dirs.OUT, '0_contig_coverage', '{sample}', 'coverage.bam'),
+        bam = join(dirs.OUT, '0_contig_coverage', '{sample}', 'coverage.sort.bam'),
     output:
         join(dirs.OUT, '6_vamb', '{sample}', 'clusters.tsv'),
     log:
@@ -427,7 +428,7 @@ rule vamb_binning:
     shell:
         """
         rm -r {params.out_dir}
-        vamb --outdir {params.out_dir} \
+        vamb bin default --outdir {params.out_dir} \
             --fasta {input.ctg} \
             --bamfiles {input.bam} \
             -m {params.min_len} \

@@ -129,3 +129,7 @@ dmypy.json
 test_data/.DS_Store
 workflow/.DS_Store
 workflow/ext/.DS_Store
+.dmanifest
+binning.out
+.snakemake
+test_out/

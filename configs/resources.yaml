@@ -15,6 +15,7 @@ metabat2_binning_mem_mb: 80000
 
 # --- concoct_binning --- #
 
+concoct_binning_threads: 20
 concoct_binning_mem_mb: 80000
 
 

@@ -56,7 +56,8 @@ def main(args): # sample_name,binners,bin_num,num_ctgs,total_size,mean_bin_size,
             bin_name_lst.pop(0)  # Remove the first empty string
             ctg_lens.pop(0)  # Remove the first 0
             bin_len_lst.pop(0) # Remove the first 0
-            bin_stat_lst.append([sample, binner, bin_num, len(ctg_lens), sum(ctg_lens), sum(ctg_lens) / len(ctg_lens), np.std(ctg_lens)])
+            avg_ctg_len = sum(ctg_lens) / len(ctg_lens) if len(ctg_lens) > 0 else 0
+            bin_stat_lst.append([sample, binner, bin_num, len(ctg_lens), sum(ctg_lens), avg_ctg_len, np.std(ctg_lens)])
     pd.DataFrame(bin_stat_lst).to_csv(join(args.out_dir, 'bin_stats.csv'), header = False, index = False)
     unbinned_name_lst = [n for n in asm_name_lst if n not in bin_name_lst]
     if 'NODE' in open(args.fasta, 'r').readline():  # MetaSPAdes contig naming scheme >NODE_1_length_28207_cov_4.594629

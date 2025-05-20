@@ -1,5 +1,7 @@
 #'''Parameters config.'''#
 
+ext: ''
+conda_prefix: ''
 
 # --- binning_algorithms --- #
 
@@ -20,8 +22,6 @@ overlap_size:     0
 # --- vamb_binning --- #
 
 min_bin_size: 100
-# Test-only-values: '-e 2 -t 2 -q 1'
-# Keep blank for actual runs
 test_flags: '-e 2 -t 2 -q 1'
 
 
@@ -30,18 +30,12 @@ test_flags: '-e 2 -t 2 -q 1'
 model_environment: 'human_gut'
 
 
-# --- maxbin2_binning --- #
-
-maxbin2_script: '/home/lam4003/bin/MaxBin-2.2.7/run_MaxBin.pl'
-
-
 # --- metabinner_binning --- #
 
-metabinner_env: '/home/lam4003/bin/camp_binning/conda_envs/6de558979255c142cdea454d816f4b6a/'
-checkm1_db: '/workdir/lam4003/Databases/CheckM_2015_01_16_010123'
+metabinner_env: ''
+checkm1_db: ''
 
 
 # --- das_tool_refinement --- #
 
-ext: '/home/lam4003/bin/camp_binning/workflow/ext'
-dastool_threshold: 0.5
+dastool_threshold: 0.5 

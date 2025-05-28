@@ -412,7 +412,7 @@ rule vamb_binning:
         ctg = join(dirs.TMP, '{sample}.fasta'),
         bam = join(dirs.OUT, '0_contig_coverage', '{sample}', 'coverage.sort.bam'),
     output:
-        join(dirs.OUT, '6_vamb', '{sample}', 'clusters.tsv'),
+        join(dirs.OUT, '6_vamb', '{sample}', 'vae_clusters_unsplit.tsv'),
     log:
         join(dirs.LOG, 'vamb_binning', '{sample}.out'),
     conda: "vamb",
@@ -439,7 +439,7 @@ rule vamb_binning:
 
 rule split_vamb_output:
     input:
-        vamb = join(dirs.OUT, '6_vamb', '{sample}', 'clusters.tsv'),
+        vamb = join(dirs.OUT, '6_vamb', '{sample}', 'vae_clusters_unsplit.tsv'),
         ctg = join(dirs.TMP, '{sample}.fasta'),
     output:
         join(dirs.OUT, '6_vamb', '{sample}_done.txt'),

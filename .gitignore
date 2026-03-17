@@ -132,4 +132,6 @@ workflow/ext/.DS_Store
 .dmanifest
 binning.out
 .snakemake
-test_out/
+
+# Testing
+test_out*/

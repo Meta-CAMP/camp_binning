@@ -1,7 +1,7 @@
 # MAG Binning
 
 
-![Version](https://img.shields.io/badge/version-0.11.3-brightgreen)
+![Version](https://img.shields.io/badge/version-0.11.4-brightgreen)
 
 <!-- [![Documentation Status](https://img.shields.io/readthedocs/camp_binning)](https://camp-documentation.readthedocs.io/en/latest/binning.html)  -->
 

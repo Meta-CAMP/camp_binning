@@ -52,6 +52,9 @@ find_install_conda_env() {
         if [ $1 = 'metabat2' ]; then
             conda create -n metabat2 -c conda-forge -c bioconda metabat2=2.15 # jgi_summarize_bam_contig_depths library incompatibilities
         else
+        elif [ $1 = 'semibin' ]; then
+            conda create --prefix $DEFAULT_CONDA_ENV_DIR/$1 -c conda-forge -c bioconda "semibin>2.2.1"
+        else
             conda create --prefix $DEFAULT_CONDA_ENV_DIR/$1 -c conda-forge -c bioconda $1
         fi
         echo "✅ $1 installed successfully!"

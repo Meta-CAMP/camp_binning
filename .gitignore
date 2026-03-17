@@ -135,3 +135,5 @@ binning.out
 
 # Testing
 test_out*/
+test_data/parameters.yaml
+test_data/samples.csv

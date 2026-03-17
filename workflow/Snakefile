@@ -233,7 +233,7 @@ rule semibin_binning:
     shell:
         """
         rm -r {params.out_dir}
-        SemiBin1 single_easy_bin -t {threads} --input-fasta {input.ctg} --input-bam {input.bam} --environment {params.meta_env} \
+        SemiBin single_easy_bin -t {threads} --input-fasta {input.ctg} --input-bam {input.bam} --environment {params.meta_env} \
             --min-len {params.min_len} --output {params.out_dir} > {log} 2>&1
         """
 
